@@ -17,6 +17,7 @@ type Error struct {
 	ServerName string
 	ProcName   string
 	LineNo     int32
+	MessageEx  string
 }
 
 func (e Error) Error() string {
@@ -50,6 +51,10 @@ func (e Error) SQLErrorProcName() string {
 
 func (e Error) SQLErrorLineNo() int32 {
 	return e.LineNo
+}
+
+func (e Error) SQLErrorLongMessage() string {
+	return e.MessageEx
 }
 
 type StreamError struct {

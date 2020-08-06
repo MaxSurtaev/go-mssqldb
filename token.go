@@ -640,6 +640,12 @@ func processSingleResponse(sess *tdsSession, ch chan tokenStruct, outs map[strin
 			if sess.logFlags&logDebug != 0 {
 				sess.log.Printf("got ERROR %d %s", err.Number, err.Message)
 			}
+			if len(errs) > 0 {
+				prevError := errs[len(errs)-1]
+				err.MessageEx = fmt.Sprintf("Number=%v State=%v Class=%v LineNo=%v ProcName=%v ServerName=%v Message=%v\n%v", err.Number, err.State, err.Class, err.LineNo, err.ProcName, err.ServerName, err.Message, prevError.MessageEx)
+			} else {
+				err.MessageEx = fmt.Sprintf("Number=%v State=%v Class=%v LineNo=%v ProcName=%v ServerName=%v Message=%v", err.Number, err.State, err.Class, err.LineNo, err.ProcName, err.ServerName, err.Message)
+			}
 			errs = append(errs, err)
 			if sess.logFlags&logErrors != 0 {
 				sess.log.Println(err.Message)
